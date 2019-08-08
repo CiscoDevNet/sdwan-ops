@@ -1,0 +1,22 @@
+- name: Export vManage Policy Lists
+  hosts: localhost
+  connection: local
+  roles:
+    - ansible-viptela
+  vars:
+    file: vmanage-templates.json
+  gather_facts: no
+  tasks:
+    - assert:
+        that:
+          - vmanage_host is defined and vmanage_host
+          - vmanage_user is defined and vmanage_host
+          - vmanage_password is defined and vmanage_host
+        fail_msg: "vmanage_host, vmanage_user, and vmanage_password must be defined"
+
+    - name: Export templates from {{ vmanage_host }} to {{ file }}
+      vmanage_template_export:
+        user: "{{ vmanage_user }}"
+        host: "{{ vmanage_host }}"
+        password: "{{ vmanage_password }}"
+        file: "{{ file }}"
