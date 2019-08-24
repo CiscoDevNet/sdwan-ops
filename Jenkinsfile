@@ -40,7 +40,8 @@ pipeline {
                     ],
                     submoduleCfg: [],
                     userRemoteConfigs: scm.userRemoteConfigs
-                ])                
+                ])
+                sh 'rmdir ops/roles/ansible-viptela'                
             }
         }
         stage('Build VIRL Topology') {
