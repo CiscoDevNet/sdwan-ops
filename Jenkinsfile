@@ -26,21 +26,18 @@ pipeline {
                     $class: 'GitSCM',
                     branches: [[name: '*/master']],
                     doGenerateSubmoduleConfigurations: false,
-                    extensions: [[$class: 'SubmoduleOption',
-                        parentCredentials: true,
-                        disableSubmodules: false,
-                        recursiveSubmodules: true,
-                        reference: '',
-                        trackingSubmodules: false]],
+                    extensions: [
+                        [$class: 'SubmoduleOption', disableSubmodules: false, recursiveSubmodules: true]
+                    ],
                     userRemoteConfigs: [[url: 'https://github.com/ciscodevnet/sdwan-devops']]
                 ])
                 checkout([$class: 'GitSCM',
                     branches: scm.branches,
                     doGenerateSubmoduleConfigurations: false,
-                    extensions: scm.extensions + [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'ops',],
-                        [$class: 'SubmoduleOption',
-                        disableSubmodules: true,
-                        recursiveSubmodules: false]]
+                    extensions: scm.extensions + [
+                        [$class: 'RelativeTargetDirectory', relativeTargetDir: 'ops',],
+                        [$class: 'SubmoduleOption', disableSubmodules: true, recursiveSubmodules: false]
+                    ],
                     submoduleCfg: [],
                     userRemoteConfigs: scm.userRemoteConfigs
                 ])                
