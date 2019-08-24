@@ -5,6 +5,7 @@
     - ansible-viptela
   vars:
     file: vmanage-policy.json
+    vmanage_host: "{{ hostvars['vmanage1'].ansible_host | default('') }}"
   gather_facts: no
   tasks:
     - assert:

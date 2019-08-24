@@ -1,0 +1,4 @@
+*.pyc
+*.retry
+*.json
+/group_vars/all/local.yml

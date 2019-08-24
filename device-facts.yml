@@ -1,0 +1,51 @@
+- name: Export vManage Policy Lists
+  hosts: localhost
+  connection: local
+  roles:
+    - ansible-viptela
+  vars:
+    file: vmanage-policy.json
+    vmanage_host: "{{ hostvars['vmanage1'].ansible_host | default('') }}"
+  gather_facts: no
+  tasks:
+    - assert:
+        that:
+          - vmanage_host is defined and vmanage_host
+          - vmanage_user is defined and vmanage_host
+          - vmanage_password is defined and vmanage_host
+        fail_msg: "vmanage_host, vmanage_user, and vmanage_password must be defined"
+
+    - name: Get device facts
+      vmanage_device_facts:
+        user: "{{ vmanage_user }}"
+        host: "{{ vmanage_host }}"
+        password: "{{ vmanage_password }}"
+      register: device_facts
+      delegate_to: localhost
+      vars:
+        all_vedges: "{{ groups.viptela_vedge | intersect(groups.virl_hosts) }}"
+
+    # Uncomment to see the data
+    # - debug:
+    #     var: device_facts
+
+    - debug:
+        msg: "vManage: {{ device_facts.controllers | selectattr('deviceType', 'equalto', 'vmanage') | map(attribute='host-name') | list }}"
+
+    - debug:
+        msg: "vBond(s): {{ device_facts.controllers | selectattr('deviceType', 'equalto', 'vbond') | map(attribute='host-name') | list }}"
+
+    - debug:
+        msg: "vSmart(s): {{ device_facts.controllers | selectattr('deviceType', 'equalto', 'vsmart') | map(attribute='host-name') | list }}"
+
+    - debug:
+        msg: "Unreachable control node(s): {{ device_facts.controllers | rejectattr('reachability', 'equalto', 'reachable') | map(attribute='host-name') | list }}"
+
+    - debug:
+        msg: "Edges in sync: {{ device_facts.vedges | selectattr('configStatusMessage', 'defined') | selectattr('configStatusMessage', 'equalto', 'In Sync') | map(attribute='host-name') | list }}"
+
+    - debug:
+        msg: "Edges out of sync: {{ device_facts.vedges | selectattr('configStatusMessage', 'defined') | rejectattr('configStatusMessage', 'equalto', 'In Sync') | map(attribute='host-name') | list }}"
+
+    - debug:
+        msg: "Unallocated devices: {{ device_facts.vedges | selectattr('deviceIP', 'undefined') | map(attribute='chasisNumber') | list }}"        
