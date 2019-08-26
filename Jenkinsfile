@@ -36,7 +36,7 @@ pipeline {
                     doGenerateSubmoduleConfigurations: false,
                     extensions: scm.extensions + [
                         [$class: 'RelativeTargetDirectory', relativeTargetDir: 'ops',],
-                        [$class: 'SubmoduleOption', disableSubmodules: true, recursiveSubmodules: false]
+                        [$class: 'SubmoduleOption', disableSubmodules: false, recursiveSubmodules: true]
                     ],
                     submoduleCfg: [],
                     userRemoteConfigs: scm.userRemoteConfigs
