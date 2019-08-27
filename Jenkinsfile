@@ -73,13 +73,17 @@ pipeline {
            steps {              
                 echo 'Exporting Templates...'
                 ansiblePlaybook disableHostKeyChecking: true, inventory: 'inventory/crn1', playbook: 'ops/export-templates.yml'
+/*
                 echo 'Import Templates...'
                 ansiblePlaybook disableHostKeyChecking: true, inventory: 'inventory/crn1', playbook: 'ops/import-templates.yml'
+*/
                 echo 'Exporting Policy...'
                 ansiblePlaybook disableHostKeyChecking: true, inventory: 'inventory/crn1', playbook: 'ops/export-policy.yml'
+/*
                 echo 'Import Policy...'
                 ansiblePlaybook disableHostKeyChecking: true, inventory: 'inventory/crn1', playbook: 'ops/import-policy.yml'
-                echo 'Import Policy...'
+*/
+                echo 'Device Facts...'
                 ansiblePlaybook disableHostKeyChecking: true, inventory: 'inventory/crn1', playbook: 'ops/device-facts.yml'
            }
         }        
