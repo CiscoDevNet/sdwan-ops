@@ -6,7 +6,7 @@ This repo is a derivative of the full CI/CD Pipeline described in the [sdwan-dev
 
 The repository contains the Cisco SD-WAN Ansible Modules as a submodule.  To clone the repo with the submodule:
 ``` bash
-git clone --recursive https:github.com/ciscodevnet/sdwan-ops
+git clone --recursive https://github.com/ciscodevnet/sdwan-ops
 ```
 ## Requirements
 * ansible
